@@ -10,7 +10,6 @@ const main = async () => {
 	const schema = await buildSchema({ resolvers });
 
 	const apolloServer = new ApolloServer({ schema });
-
 	const app = Express();
 	await apolloServer.start();
 	apolloServer.applyMiddleware({ app });

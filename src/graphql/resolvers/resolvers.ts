@@ -1,4 +1,4 @@
-import Register from './users/Register';
+import Register from './users/register/Register';
 import { NonEmptyArray } from 'type-graphql';
 
 type ResolversArray = NonEmptyArray<Function> | NonEmptyArray<string>

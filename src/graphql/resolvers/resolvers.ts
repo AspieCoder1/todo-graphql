@@ -1,6 +1,6 @@
-import Register from './users/register/Register';
+import UserResolver from './users/UserResolver';
 import { NonEmptyArray } from 'type-graphql';
 
 type ResolversArray = NonEmptyArray<Function> | NonEmptyArray<string>
 
-export default [Register] as ResolversArray;
+export default [UserResolver] as ResolversArray;

@@ -1,8 +1,8 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { User } from '@entities/User';
 import * as bcrypt from 'bcryptjs';
-import { RegisterInput } from './types/RegisterInput';
-import { LoginInput } from './types/LoginInput';
+import { RegisterInput } from './RegisterInput';
+import { LoginInput } from './LoginInput';
 import { MyContext } from '@ctx/MyContext';
 import * as jwt from 'jsonwebtoken';
 
@@ -33,13 +33,15 @@ class UserResolver {
 		const user = await User.findOne({ where: { email } });
 		const passwordCorrect = await bcrypt.compare(password, user?.password ?? '');
 
+		// Check if password is either wrong or user email is not found
 		if (!user || !passwordCorrect) {
 			return null;
 		}
 
+		// Set up max age of cookie and accesses token
 		const maxAge = 1000 * 60 * 60 * 24 * 15;
-
-		const token = jwt.sign({ user }, 'sdfefrgteyth');
+		// Generate the access token
+		const token = jwt.sign({ user }, 'sdfefrgteyth', {expiresIn: maxAge});
 
 		// Set cookie to store the token
 		res.cookie('AccessToken', token, { secure: true, maxAge });

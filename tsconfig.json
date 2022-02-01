@@ -24,7 +24,7 @@
     "paths": {
       "@resolvers/*": ["graphql/resolvers/*"],
       "@entities/*": ["entities/*"],
-      "@types/*": ["types/*"]
+      "@ctx/*": ["context/*"]
     }
   },
   "exclude": ["node_modules"],

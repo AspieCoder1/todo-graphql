@@ -40,7 +40,9 @@ class UserResolver {
 		const maxAge = 1000 * 60 * 60 * 24 * 15;
 
 		const token = jwt.sign({ user }, 'sdfefrgteyth');
-		res.cookie('AccessToken', { id: user?.id }, { secure: true, maxAge });
+
+		// Set cookie to store the token
+		res.cookie('AccessToken', token, { secure: true, maxAge });
 
 		return user;
 	}

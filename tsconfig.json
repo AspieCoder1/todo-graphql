@@ -13,20 +13,20 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
-//    "noUnusedLocals": true,
-//    "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
-    "baseUrl": "./src",
+    "resolveJsonModule": true,
+    "baseUrl": "src",
     "paths": {
-      "@resolvers/*": ["/graphql/resolvers/*"],
-      "@entities/*": ["/entities/*"]
+      "@resolvers/*": ["graphql/resolvers/*"],
+      "@entities/*": ["entities/*"],
+      "@types/*": ["types/*"]
     }
   },
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.tsx", "./src/**/*.ts"]
+  "include": ["./src/**/*.ts"]
 }

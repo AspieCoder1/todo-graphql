@@ -11,11 +11,6 @@ class Register {
 		return 'Hello world';
 	}
 
-	@FieldResolver()
-	name(@Root() parent: User): string {
-		return `${parent.firstName} ${parent.lastName}`;
-	}
-
 	@Mutation(() => User)
 	async registerUser(
 		@Arg('data') { email, firstName, lastName, password }: RegisterInput,
@@ -27,6 +22,11 @@ class Register {
 		} catch (err) {
 			return err;
 		}
+
+	}
+
+	@Mutation(() => User)
+	async loginUser() {
 
 	}
 

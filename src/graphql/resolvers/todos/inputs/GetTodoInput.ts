@@ -1,5 +1,5 @@
 import { Field, InputType } from 'type-graphql';
-import { TodoExists } from '../validation/todoExists';
+import { TodoExists } from './validation/todoExists';
 
 @InputType()
 export class GetTodoInput {
@@ -11,5 +11,3 @@ export class GetTodoInput {
 	})
 	id: number;
 }
-
-

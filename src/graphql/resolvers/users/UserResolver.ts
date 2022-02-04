@@ -1,8 +1,8 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { User } from '@entities/User';
 import * as bcrypt from 'bcryptjs';
-import { RegisterInput } from './RegisterInput';
-import { LoginInput } from './LoginInput';
+import { RegisterInput } from './inputs/RegisterInput';
+import { LoginInput } from './inputs/LoginInput';
 import { ContextType } from '@ctx/ContextType';
 import * as jwt from 'jsonwebtoken';
 

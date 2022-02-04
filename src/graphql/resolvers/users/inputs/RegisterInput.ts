@@ -1,6 +1,6 @@
 import { Field, InputType } from 'type-graphql';
 import { IsEmail, Length } from 'class-validator';
-import { IsEmailUnique } from './isUniqueEmail';
+import { IsEmailUnique } from './validation/isUniqueEmail';
 
 @InputType()
 export class RegisterInput {

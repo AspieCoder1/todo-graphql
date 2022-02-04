@@ -41,10 +41,8 @@ class UserResolver {
 
 		// Set up max age of cookie and accesses token
 		const maxAge = 1000 * 60 * 60 * 24 * 15;
-		console.log(process.env.JWT_SECRET);
 		// Generate the access token
-		const token = jwt.sign({ user }, process.env.JWT_SECRET ?? '', { expiresIn: maxAge });
-
+		const token = jwt.sign({ userID: user.id }, process.env.JWT_SECRET ?? '', { expiresIn: maxAge });
 		// Set cookie to store the token
 		await res.cookie('access-token', token, { maxAge });
 

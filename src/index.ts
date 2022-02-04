@@ -14,10 +14,9 @@ import * as path from 'path';
 
 import { customAuthChecker } from '@auth/customAuthChecker';
 import resolvers from './graphql/resolvers/resolvers';
-import { User } from '@entities/User';
 
 if (process.env.NODE_ENV === 'development') {
-	dotenv.config({ path: path.join(__dirname, './config/development.env')});
+	dotenv.config({ path: path.join(__dirname, './config/development.env') });
 	console.log(process.env.JWT_SECRET);
 }
 
@@ -40,8 +39,9 @@ const main = async () => {
 	app.use((req, _, next) => {
 		const accessToken = req.cookies['access-token'];
 		try {
-			const user = jwt.verify(accessToken, process.env.JWT_SECRET ?? '');
-			(req as any).user = user;
+			const data: any = jwt.verify(accessToken, process.env.JWT_SECRET ?? '');
+			console.log(data);
+			(req as any).userID = data.userID;
 		} catch (e) {
 
 		} finally {

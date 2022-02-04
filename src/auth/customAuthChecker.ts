@@ -3,5 +3,5 @@ import { AuthChecker } from 'type-graphql';
 
 
 export const customAuthChecker: AuthChecker<ContextType> = async ({ context }, _roles): Promise<boolean> => {
-	return !!(context.req as any).user;
+	return !!(context.req as any).userID;
 };

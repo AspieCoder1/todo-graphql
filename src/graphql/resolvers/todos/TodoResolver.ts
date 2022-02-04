@@ -4,6 +4,7 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { ForbiddenError } from 'apollo-server-express';
 import { GetTodoInput } from './inputs/GetTodoInput';
 import { CreateTodoInput } from './inputs/CreateTodoInput';
+import { UpdateTodoInput } from './inputs/UpdateTodoInput';
 
 @Resolver(Todo)
 export class TodoResolver {
@@ -26,9 +27,16 @@ export class TodoResolver {
 	}
 
 	@Authorized()
-	@Mutation(() => Boolean)
-	async deleteTodo(@Arg('data') { id }: GetTodoInput): Promise<boolean> {
-		const { affected } = await Todo.delete({ id });
-		return affected === 1;
+	@Mutation(() => Todo)
+	async deleteTodo(@Arg('data') { id }: GetTodoInput): Promise<Todo> {
+		const { raw } = await Todo.delete({ id });
+		return raw[0];
+	}
+
+	@Authorized()
+	@Mutation(() => Todo)
+	async editTodo(@Arg('data') { updates, id }: UpdateTodoInput, @Ctx() { req }: ContextType): Promise<Todo> {
+		const { raw } = await Todo.update({ id, user: (req as any).userID }, { ...updates });
+		return raw[0];
 	}
 }

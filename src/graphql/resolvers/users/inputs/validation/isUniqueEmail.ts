@@ -2,30 +2,28 @@ import {
 	registerDecorator,
 	ValidationOptions,
 	ValidatorConstraint,
-	ValidatorConstraintInterface
-} from "class-validator";
+	ValidatorConstraintInterface,
+} from 'class-validator';
 
-import { User } from "../../../../../entities/User";
+import { User } from '../../../../../entities/User';
 
 @ValidatorConstraint({ async: true })
-export class IsEmailAlreadyExistConstraint
-	implements ValidatorConstraintInterface {
+export class IsEmailAlreadyExistConstraint implements ValidatorConstraintInterface {
 	validate(email: string) {
 		return User.findOne({ where: { email } }).then(user => {
 			return !user;
-
 		});
 	}
 }
 
 export function IsEmailUnique(validationOptions?: ValidationOptions) {
-	return function(object: Object, propertyName: string) {
+	return function (object: Object, propertyName: string) {
 		registerDecorator({
 			target: object.constructor,
 			propertyName: propertyName,
 			options: validationOptions,
 			constraints: [],
-			validator: IsEmailAlreadyExistConstraint
+			validator: IsEmailAlreadyExistConstraint,
 		});
 	};
 }

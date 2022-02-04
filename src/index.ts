@@ -20,10 +20,12 @@ if (process.env.NODE_ENV === 'development') {
 	console.log(process.env.JWT_SECRET);
 }
 
-
 const main = async () => {
 	await createConnection();
-	const schema = await buildSchema({ resolvers, authChecker: customAuthChecker });
+	const schema = await buildSchema({
+		resolvers,
+		authChecker: customAuthChecker,
+	});
 	const plugins = [
 		process.env.NODE_ENV === 'production'
 			? ApolloServerPluginLandingPageDisabled()
@@ -31,7 +33,7 @@ const main = async () => {
 	];
 	const apolloServer = new ApolloServer({
 		schema,
-		context: ({ req, res }: { req: Express.Request, res: Express.Response }) => ({ req, res }),
+		context: ({ req, res }: { req: Express.Request; res: Express.Response }) => ({ req, res }),
 		plugins,
 	});
 	const app = Express();
@@ -43,7 +45,6 @@ const main = async () => {
 			console.log(data);
 			(req as any).userID = data.userID;
 		} catch (e) {
-
 		} finally {
 			next();
 		}

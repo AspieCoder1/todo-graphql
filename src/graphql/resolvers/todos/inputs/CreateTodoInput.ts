@@ -1,11 +1,10 @@
-import {Field, InputType} from "type-graphql";
+import { Field, InputType } from 'type-graphql';
 
 @InputType()
 export class CreateTodoInput {
-    @Field()
-    body: string;
+	@Field()
+	body: string;
 
-    @Field()
-    due: Date;
-
+	@Field()
+	due: Date;
 }

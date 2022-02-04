@@ -17,11 +17,18 @@ export class TodoResolver {
 		}
 
 		return todo;
-	};
+	}
 
 	@Authorized()
 	@Mutation(() => Todo)
 	async addTodo(@Arg('data') { body, due }: CreateTodoInput, @Ctx() { req }: ContextType): Promise<Todo | undefined> {
-		return await Todo.create({ body, due, user: (req as any).userID }).save();
+		return Todo.create({ body, due, user: (req as any).userID }).save();
+	}
+
+	@Authorized()
+	@Mutation(() => Boolean)
+	async deleteTodo(@Arg('data') { id }: GetTodoInput): Promise<boolean> {
+		const { affected } = await Todo.delete({ id });
+		return affected === 1;
 	}
 }

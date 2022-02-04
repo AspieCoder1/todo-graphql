@@ -6,7 +6,6 @@ import { LoginInput } from './inputs/LoginInput';
 import { ContextType } from '@ctx/ContextType';
 import * as jwt from 'jsonwebtoken';
 
-
 @Resolver(User)
 class UserResolver {
 	@Authorized()
@@ -21,17 +20,19 @@ class UserResolver {
 	}
 
 	@Mutation(() => User)
-	async registerUser(
-		@Arg('data') { email, firstName, lastName, password }: RegisterInput,
-	): Promise<User> {
+	async registerUser(@Arg('data') { email, firstName, lastName, password }: RegisterInput): Promise<User> {
 		try {
 			const salt = await bcrypt.genSalt(12);
 			const hashedPassword = await bcrypt.hash(password, salt);
-			return await User.create({ email, password: hashedPassword, lastName, firstName }).save();
+			return await User.create({
+				email,
+				password: hashedPassword,
+				lastName,
+				firstName,
+			}).save();
 		} catch (err) {
 			return err;
 		}
-
 	}
 
 	@Mutation(() => User)
@@ -47,14 +48,15 @@ class UserResolver {
 		// Set up max age of cookie and accesses token
 		const maxAge = 1000 * 60 * 60 * 24 * 15;
 		// Generate the access token
-		const token = jwt.sign({ userID: user.id }, process.env.JWT_SECRET ?? '', { expiresIn: maxAge });
+		const token = jwt.sign({ userID: user.id }, process.env.JWT_SECRET ?? '', {
+			expiresIn: maxAge,
+		});
 		// Set cookie to store the token
 		const secure = process.env.NODE_ENV === 'production';
 		await res.cookie('access-token', token, { maxAge, httpOnly: true, secure });
 
 		return user;
 	}
-
 }
 
 export default UserResolver;

@@ -4,7 +4,6 @@ import { IsEmailUnique } from './validation/isUniqueEmail';
 
 @InputType()
 export class RegisterInput {
-
 	@Field()
 	@Length(1, 30)
 	firstName: string;
@@ -15,10 +14,9 @@ export class RegisterInput {
 
 	@Field()
 	@IsEmail()
-	@IsEmailUnique({ message: "email already in use"})
+	@IsEmailUnique({ message: 'email already in use' })
 	email: string;
 
 	@Field()
 	password: string;
-
 }

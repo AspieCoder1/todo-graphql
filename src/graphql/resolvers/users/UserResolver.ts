@@ -49,7 +49,8 @@ class UserResolver {
 		// Generate the access token
 		const token = jwt.sign({ userID: user.id }, process.env.JWT_SECRET ?? '', { expiresIn: maxAge });
 		// Set cookie to store the token
-		await res.cookie('access-token', token, { maxAge, httpOnly: true });
+		const secure = process.env.NODE_ENV === 'production';
+		await res.cookie('access-token', token, { maxAge, httpOnly: true, secure });
 
 		return user;
 	}

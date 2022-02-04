@@ -1,10 +1,10 @@
 import { Field, ObjectType } from 'type-graphql';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '@entities/User';
 
 @ObjectType()
 @Entity()
-export class Todo {
+export class Todo extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -20,6 +20,7 @@ export class Todo {
 	@Column({ default: false })
 	completed: boolean;
 
+	@Field()
 	@Column()
 	@ManyToOne(() => User, user => user.todos)
 	user: string;

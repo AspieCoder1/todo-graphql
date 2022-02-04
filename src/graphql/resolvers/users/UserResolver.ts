@@ -15,6 +15,11 @@ class UserResolver {
 		return 'Hello world';
 	}
 
+	@Query(() => Boolean, { description: 'authenticated' })
+	isAuthenticated(@Ctx() { req }: ContextType): boolean {
+		return !!(req as any).userID;
+	}
+
 	@Mutation(() => User)
 	async registerUser(
 		@Arg('data') { email, firstName, lastName, password }: RegisterInput,
@@ -44,7 +49,7 @@ class UserResolver {
 		// Generate the access token
 		const token = jwt.sign({ userID: user.id }, process.env.JWT_SECRET ?? '', { expiresIn: maxAge });
 		// Set cookie to store the token
-		await res.cookie('access-token', token, { maxAge });
+		await res.cookie('access-token', token, { maxAge, httpOnly: true });
 
 		return user;
 	}

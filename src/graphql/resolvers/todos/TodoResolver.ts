@@ -1,8 +1,9 @@
 import { ContextType } from '@ctx/ContextType';
 import { Todo } from '@entities/Todo';
-import { Arg, Authorized, Ctx, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { ForbiddenError } from 'apollo-server-express';
 import { GetTodoInput } from './inputs/GetTodoInput';
+import { CreateTodoInput } from './inputs/CreateTodoInput';
 
 @Resolver(Todo)
 export class TodoResolver {
@@ -17,4 +18,10 @@ export class TodoResolver {
 
 		return todo;
 	};
+
+	@Authorized()
+	@Mutation(() => Todo)
+	async addTodo(@Arg('data') { body, due }: CreateTodoInput, @Ctx() { req }: ContextType): Promise<Todo | undefined> {
+		return await Todo.create({ body, due, user: (req as any).userID }).save();
+	}
 }

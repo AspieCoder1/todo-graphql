@@ -23,5 +23,5 @@ export class Todo extends BaseEntity {
 	@Field()
 	@Column()
 	@ManyToOne(() => User, user => user.todos)
-	user: string;
+	user: number;
 }

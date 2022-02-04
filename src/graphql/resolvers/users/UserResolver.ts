@@ -1,14 +1,15 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { User } from '@entities/User';
 import * as bcrypt from 'bcryptjs';
 import { RegisterInput } from './RegisterInput';
 import { LoginInput } from './LoginInput';
-import { MyContext } from '@ctx/MyContext';
+import { ContextType } from '@ctx/ContextType';
 import * as jwt from 'jsonwebtoken';
 
 
 @Resolver(User)
 class UserResolver {
+	@Authorized()
 	@Query(() => String)
 	hello(): string {
 		return 'Hello world';
@@ -29,7 +30,7 @@ class UserResolver {
 	}
 
 	@Mutation(() => User)
-	async loginUser(@Arg('data') { email, password }: LoginInput, @Ctx() { res }: MyContext): Promise<User | null> {
+	async loginUser(@Arg('data') { email, password }: LoginInput, @Ctx() { res }: ContextType): Promise<User | null> {
 		const user = await User.findOne({ where: { email } });
 		const passwordCorrect = await bcrypt.compare(password, user?.password ?? '');
 
@@ -40,11 +41,12 @@ class UserResolver {
 
 		// Set up max age of cookie and accesses token
 		const maxAge = 1000 * 60 * 60 * 24 * 15;
+		console.log(process.env.JWT_SECRET);
 		// Generate the access token
-		const token = jwt.sign({ user }, 'sdfefrgteyth', {expiresIn: maxAge});
+		const token = jwt.sign({ user }, process.env.JWT_SECRET ?? '', { expiresIn: maxAge });
 
 		// Set cookie to store the token
-		res.cookie('AccessToken', token, { secure: true, maxAge });
+		await res.cookie('access-token', token, { maxAge });
 
 		return user;
 	}

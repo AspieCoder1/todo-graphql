@@ -1,6 +1,6 @@
 import * as Express from 'express';
 
-export type MyContext =  {
+export type ContextType =  {
 	req: Express.Request;
 	res: Express.Response;
 }

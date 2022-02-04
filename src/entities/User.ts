@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Field, ID, ObjectType, Root } from 'type-graphql';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Authorized, Field, ID, ObjectType, Root } from 'type-graphql';
+import { Todo } from './Todo';
 
 @ObjectType()
 @Entity()
@@ -9,6 +10,7 @@ export class User extends BaseEntity {
 	id: number;
 
 	@Field()
+	@Authorized()
 	@Column()
 	firstName: string;
 
@@ -17,7 +19,7 @@ export class User extends BaseEntity {
 	lastName: string;
 
 	@Field()
-	name (@Root() parent: User): string {
+	name(@Root() parent: User): string {
 		return `${parent.firstName} ${parent.lastName}`;
 	}
 
@@ -27,4 +29,8 @@ export class User extends BaseEntity {
 
 	@Column()
 	password: string;
+
+	@Field(type => [Todo])
+	@OneToMany(() => Todo, todo => todo.user)
+	todos: Todo[];
 }
